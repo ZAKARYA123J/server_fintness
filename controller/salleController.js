@@ -2,13 +2,14 @@ const {Salle}=require('../models')
 
 
 const createsalle=async(req,res)=>{
-    const {nom,adress,codepostal,ville}=req.body
+    const {nom,adress,codepostal,ville,IDadmin}=req.body
     try{
         const salle=await Salle.create({
             NomS:nom,
             AdresseS:adress,
             CodePostalS:codepostal,
-            VilleS:ville
+            VilleS:ville,
+            IDadmin
         })
         res.status(200).json({message:"salle create succes",salle})
     }catch(error){

@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       unique: true
     },
+    IDadmin: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Admin',
+        key: 'id',
+      },
+    },
     NumS: {
       type: DataTypes.INTEGER,
       references: {
@@ -24,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   Inscrire.associate = function(models) {
     Inscrire.belongsTo(models.Membre, { foreignKey: 'NumM' });
     Inscrire.belongsTo(models.Salle, { foreignKey: 'NumS' });
+    Inscrire.belongsTo(models.Admin,{foreignKey:'IDadmin'})
   };
 
   return Inscrire;

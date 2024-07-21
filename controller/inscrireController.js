@@ -1,24 +1,26 @@
-const { where } = require('sequelize');
-const { Inscrire, Membre, Salle } = require('../models');
+const { Inscrire, Membre, Salle, Admin } = require('../models');
 
 // Create a new Inscrire record
 const createInscrire = async (req, res) => {
-  const { NumM, NumS } = req.body;
+  const { NumM, NumS, IDadmin } = req.body;
   try {
-    const existeinscrire=await Inscrire.findOne({where:{NumM}})
-    const existeNumM=await Membre.findOne({where:{NumM}})
-    const exiqtzNums=await Salle.findOne({where:{NumS}})
-    if(!exiqtzNums || !existeNumM){
-      return res.status(200).json({mesage:'not found'})
+    const existeInscrire = await Inscrire.findOne({ where: { NumM } });
+    const existeNumM = await Membre.findOne({ where: { NumM } });
+    const existeNumS = await Salle.findOne({ where: { NumS } });
+
+    if (!existeNumS || !existeNumM) {
+      return res.status(404).json({ message: 'Membre or Salle not found' });
     }
-    if(existeinscrire){
-      return res.status(400).json({ error: "NumM already has an inscrire record" });
+
+    if (existeInscrire) {
+      return res.status(400).json({ error: 'NumM already has an Inscrire record' });
     }
-    const inscrire = await Inscrire.create({ NumM, NumS });
+
+    const inscrire = await Inscrire.create({ NumM, NumS, IDadmin });
     return res.status(201).json(inscrire);
   } catch (error) {
-    console.error('Error creating inscrire:', error);
-    return res.status(500).json({ error: "An error occurred while creating the inscrire" });
+    console.error('Error creating Inscrire:', error);
+    return res.status(500).json({ error: 'An error occurred while creating the Inscrire' });
   }
 };
 
@@ -28,13 +30,14 @@ const getAllInscrire = async (req, res) => {
     const inscrire = await Inscrire.findAll({
       include: [
         { model: Membre, as: 'Membre' },
-        { model: Salle, as: 'Salle' }
+        { model: Salle, as: 'Salle' },
+        { model: Admin, as: 'Admin' }
       ]
     });
     return res.status(200).json(inscrire);
   } catch (error) {
-    console.error('Error fetching inscrire:', error);
-    return res.status(500).json({ error: "An error occurred while fetching the inscrire" });
+    console.error('Error fetching Inscrire:', error);
+    return res.status(500).json({ error: 'An error occurred while fetching the Inscrire' });
   }
 };
 
@@ -42,19 +45,21 @@ const getAllInscrire = async (req, res) => {
 const getInscrireByPk = async (req, res) => {
   const { NumM } = req.params;
   try {
-    const inscrire = await Inscrire.findByPk(NumM, {
+    const inscrire = await Inscrire.findOne({
+      where: { NumM },
       include: [
         { model: Membre, as: 'Membre' },
-        { model: Salle, as: 'Salle' }
+        { model: Salle, as: 'Salle' },
+        { model: Admin, as: 'Admin' }
       ]
     });
     if (!inscrire) {
-      return res.status(404).json({ error: "Inscrire not found" });
+      return res.status(404).json({ error: 'Inscrire not found' });
     }
     return res.status(200).json(inscrire);
   } catch (error) {
-    console.error('Error fetching inscrire:', error);
-    return res.status(500).json({ error: "An error occurred while fetching the inscrire" });
+    console.error('Error fetching Inscrire:', error);
+    return res.status(500).json({ error: 'An error occurred while fetching the Inscrire' });
   }
 };
 
@@ -62,16 +67,16 @@ const getInscrireByPk = async (req, res) => {
 const updateInscrire = async (req, res) => {
   const { NumM, NumS } = req.body;
   try {
-    const inscrire = await Inscrire.findByPk(NumM);
+    const inscrire = await Inscrire.findOne({ where: { NumM } });
     if (!inscrire) {
-      return res.status(404).json({ error: "Inscrire not found" });
+      return res.status(404).json({ error: 'Inscrire not found' });
     }
     inscrire.NumS = NumS;
     await inscrire.save();
     return res.status(200).json(inscrire);
   } catch (error) {
-    console.error('Error updating inscrire:', error);
-    return res.status(500).json({ error: "An error occurred while updating the inscrire" });
+    console.error('Error updating Inscrire:', error);
+    return res.status(500).json({ error: 'An error occurred while updating the Inscrire' });
   }
 };
 
@@ -79,15 +84,15 @@ const updateInscrire = async (req, res) => {
 const deleteInscrire = async (req, res) => {
   const { NumM } = req.params;
   try {
-    const inscrire = await Inscrire.findByPk(NumM);
+    const inscrire = await Inscrire.findOne({ where: { NumM } });
     if (!inscrire) {
-      return res.status(404).json({ error: "Inscrire not found" });
+      return res.status(404).json({ error: 'Inscrire not found' });
     }
     await inscrire.destroy();
-    return res.status(200).json({ message: "Inscrire deleted successfully" });
+    return res.status(200).json({ message: 'Inscrire deleted successfully' });
   } catch (error) {
-    console.error('Error deleting inscrire:', error);
-    return res.status(500).json({ error: "An error occurred while deleting the inscrire" });
+    console.error('Error deleting Inscrire:', error);
+    return res.status(500).json({ error: 'An error occurred while deleting the Inscrire' });
   }
 };
 

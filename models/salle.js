@@ -7,6 +7,14 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
+    IDadmin: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Admin',
+        key: 'id',
+      },
+    },
     NomS: DataTypes.STRING,
     AdresseS: DataTypes.STRING,
     VilleS: DataTypes.STRING

@@ -15,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    IDadmin: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Admin',
+        key: 'id',
+      },
+    },
     AdresseM: {
       type: DataTypes.STRING,
       allowNull: false
@@ -34,7 +42,8 @@ module.exports = (sequelize, DataTypes) => {
 
   Membre.associate = function(models) {
     Membre.hasOne(models.Inscrire, { foreignKey: 'NumM' });
-    // Membre.hasMany(models.Abonner, { foreignKey: 'NumM' });
+    Membre.hasMany(models.Abonner, { foreignKey: 'NumM' });
+    Membre.belongsTo(models.Admin, { foreignKey: 'IDadmin' });
   };
 
   return Membre

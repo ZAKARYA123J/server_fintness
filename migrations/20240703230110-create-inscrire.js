@@ -26,6 +26,14 @@ module.exports = {
           key: 'NumS',
         },
       },
+      IDadmin: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Admin',
+          key: 'id',
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

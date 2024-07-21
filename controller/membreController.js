@@ -3,7 +3,7 @@ const { Membre } = require('../models');
 const membre = require('../models/membre');
 
 const createAndInscrireMembre = async (req, res) => {
-  const { nom, prenom, adresse, ville, dateDeNaissance } = req.body;
+  const { nom, prenom, adresse, ville, dateDeNaissance,IDadmin } = req.body;
 
   try {
     // Check if the salle exists
@@ -16,6 +16,7 @@ const createAndInscrireMembre = async (req, res) => {
       AdresseM: adresse,
       VilleM: ville,
       DateDeNaissanceM: dateDeNaissance,
+      IDadmin:IDadmin
     });
 
     // Create the Inscrire record

@@ -25,6 +25,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      IDadmin: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Admin',
+          key: 'id',
+        },
+      },
       DateDeNaissanceM: {
         type: Sequelize.DATE,
         allowNull: false,

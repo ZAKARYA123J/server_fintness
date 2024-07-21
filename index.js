@@ -3,6 +3,7 @@ const cors = require('cors');
 const membreRoutes = require('./router/membreRouter');
 const salleRoutes = require('./router/salleRouter');
 const inscrireRoutes=require('./router/inscrireRouter')
+const adminRoutes=require('./router/adminRouter')
 const app = express();
 const port = 3000;
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/membres', membreRoutes);
 app.use('/salles', salleRoutes);
 app.use('/inscrire',inscrireRoutes)
+app.use('/admins',adminRoutes)
 // Start the server and log the port
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
